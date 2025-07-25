@@ -1,13 +1,22 @@
-# 💬 ChatGPT Clone - Nhost Next.js Template
+# 💬 AI Chat Application - Nhost + Mistral AI Template
 
-A **modern ChatGPT-style interface** built with **Next.js 15**, **Nhost.io**, and **shadcn/ui**. This template provides a complete chat application with authentication, thread management, and a beautiful responsive design.
+A **modern ChatGPT-style interface** powered by **Mistral AI**, built with **Next.js 15**, **Nhost.io**, and **shadcn/ui**. This template provides a complete AI chat application with authentication, intelligent responses, thread management, and a beautiful responsive design.
 
 ![Nhost + Next.js](https://img.shields.io/badge/Nhost-Next.js-blue?style=for-the-badge&logo=nextdotjs)
+![Mistral AI](https://img.shields.io/badge/Mistral-AI-FF6B35?style=for-the-badge&logo=ai&logoColor=white)
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ## ✨ Features
+
+### 🤖 **Mistral AI Integration**
+- **Intelligent AI Responses** - Powered by Mistral AI's `mistral-small-latest` model
+- **Conversation Context** - Maintains chat history for contextual responses
+- **Secure API Integration** - Server-side API routes protect your API keys
+- **Error Handling** - Graceful fallbacks when AI service is unavailable
+- **Loading States** - Visual feedback during AI response generation
+- **TypeScript Support** - Fully typed AI service integration
 
 ### 💬 **ChatGPT-Style Interface**
 - **Modern Chat UI** - Clean, responsive chat interface
@@ -15,7 +24,7 @@ A **modern ChatGPT-style interface** built with **Next.js 15**, **Nhost.io**, an
 - **Message Bubbles** - Properly styled user and AI messages
 - **Sidebar Navigation** - Collapsible thread list with mobile support
 - **Real-time Messaging** - Smooth message sending and receiving
-- **Echo Response** - Messages are echoed back for demonstration
+- **AI-Powered Conversations** - Get intelligent responses from Mistral AI
 
 ### 🔐 **Complete Authentication System**
 - **Email/Password Authentication** with Nhost
@@ -88,9 +97,30 @@ npm install
    ```env
    NEXT_PUBLIC_NHOST_SUBDOMAIN=your-project-subdomain
    NEXT_PUBLIC_NHOST_REGION=your-project-region
+   MISTRAL_API_KEY=your-mistral-api-key
    ```
 
-### 3. Set up Sample Database (Optional)
+### 3. Set up Mistral AI
+
+1. **Get Mistral API Key**:
+   - Go to [Mistral AI Console](https://console.mistral.ai/)
+   - Sign up or log in to your account
+   - Navigate to "API Keys" section
+   - Create a new API key
+
+2. **Add API Key to Environment**:
+   - Copy your Mistral API key
+   - Add it to your `.env.local` file:
+   ```env
+   MISTRAL_API_KEY=your-mistral-api-key-here
+   ```
+
+3. **Verify Integration**:
+   - The app uses `mistral-small-latest` model by default
+   - API calls are made securely through server-side routes
+   - Your API key is never exposed to the client
+
+### 4. Set up Sample Database (Optional)
 
 For the movies demo data, run this SQL in your Nhost SQL Editor:
 
@@ -113,13 +143,31 @@ INSERT INTO movies (title, director, release_year, genre, rating) VALUES
 
 **Important**: Enable "Track this" and set permissions for the `public` role.
 
-### 4. Run Development Server
+### 5. Run Development Server
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see your app! 🎉
+
+## 🤖 Using Mistral AI Chat
+
+Once your app is running:
+
+1. **Sign up** and **verify your email** through the authentication flow
+2. **Navigate to `/chat`** to access the AI chat interface
+3. **Start chatting** - your messages will be sent to Mistral AI
+4. **Create new threads** to organize different conversations
+5. **Switch between conversations** using the sidebar
+
+### 🔧 **Mistral AI Features**
+
+- **Context-Aware**: The AI remembers your conversation history
+- **Secure**: API keys are handled server-side for security
+- **Error Handling**: Graceful fallbacks if the AI service is unavailable
+- **Loading States**: Visual feedback while generating responses
+- **Thread Management**: Organize conversations by topic
 
 ## 📱 Authentication Flow
 
