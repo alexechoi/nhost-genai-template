@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+// Removed direct import - now using API route
 
 import {
 	Send,
@@ -22,6 +23,11 @@ import {
 	Menu,
 	X,
 } from "lucide-react";
+
+interface ChatMessage {
+	role: "user" | "assistant" | "system";
+	content: string;
+}
 
 interface Message {
 	id: string;
@@ -44,6 +50,7 @@ export default function ChatInterface() {
 	const router = useRouter();
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputValue, setInputValue] = useState("");
+	const [isSending, setIsSending] = useState(false);
 	const [threads, setThreads] = useState<Thread[]>([
 		{
 			id: "1",
@@ -71,8 +78,8 @@ export default function ChatInterface() {
 		}
 	}, [isAuthenticated, isLoading, router]);
 
-	const handleSendMessage = () => {
-		if (!inputValue.trim()) return;
+	const handleSendMessage = async () => {
+		if (!inputValue.trim() || isSending) return;
 
 		const userMessage: Message = {
 			id: Date.now().toString(),
@@ -81,24 +88,74 @@ export default function ChatInterface() {
 			timestamp: new Date(),
 		};
 
-		const botMessage: Message = {
-			id: (Date.now() + 1).toString(),
-			content: inputValue, // Echo the same message for now
-			isUser: false,
-			timestamp: new Date(),
-		};
-
-		setMessages((prev) => [...prev, userMessage, botMessage]);
+		// Add user message immediately
+		setMessages((prev) => [...prev, userMessage]);
+		const currentInput = inputValue;
 		setInputValue("");
+		setIsSending(true);
 
-		// Update thread with last message
-		setThreads((prev) =>
-			prev.map((thread) =>
-				thread.id === activeThreadId
-					? { ...thread, lastMessage: inputValue, timestamp: new Date() }
-					: thread,
-			),
-		);
+		try {
+			// Prepare conversation history for Mistral
+			const conversationHistory: ChatMessage[] = [
+				...messages.map((msg) => ({
+					role: msg.isUser ? ("user" as const) : ("assistant" as const),
+					content: msg.content,
+				})),
+				{
+					role: "user" as const,
+					content: currentInput,
+				},
+			];
+
+			// Get response from Mistral via API route
+			const response = await fetch('/api/chat', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ messages: conversationHistory }),
+			});
+
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}`);
+			}
+
+			const data = await response.json();
+			const aiResponse = data.response;
+
+			const botMessage: Message = {
+				id: (Date.now() + 1).toString(),
+				content: aiResponse,
+				isUser: false,
+				timestamp: new Date(),
+			};
+
+			// Add bot response
+			setMessages((prev) => [...prev, botMessage]);
+
+			// Update thread with last message
+			setThreads((prev) =>
+				prev.map((thread) =>
+					thread.id === activeThreadId
+						? { ...thread, lastMessage: currentInput, timestamp: new Date() }
+						: thread,
+				),
+			);
+		} catch (error) {
+			console.error("Error getting AI response:", error);
+
+			// Add error message
+			const errorMessage: Message = {
+				id: (Date.now() + 1).toString(),
+				content:
+					"Sorry, I encountered an error while processing your message. Please try again.",
+				isUser: false,
+				timestamp: new Date(),
+			};
+			setMessages((prev) => [...prev, errorMessage]);
+		} finally {
+			setIsSending(false);
+		}
 	};
 
 	const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -319,10 +376,14 @@ export default function ChatInterface() {
 						/>
 						<Button
 							onClick={handleSendMessage}
-							disabled={!inputValue.trim()}
+							disabled={!inputValue.trim() || isSending}
 							size="sm"
 						>
-							<Send className="h-4 w-4" />
+							{isSending ? (
+								<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+							) : (
+								<Send className="h-4 w-4" />
+							)}
 						</Button>
 					</div>
 				</div>
