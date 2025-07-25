@@ -47,7 +47,7 @@ export default function AuthPage() {
 	useEffect(() => {
 		if (!authLoading && isAuthenticated && user) {
 			if (user.emailVerified) {
-				router.push("/dashboard");
+				router.push("/chat");
 			} else {
 				router.push("/auth/verify-email");
 			}
@@ -69,15 +69,18 @@ export default function AuthPage() {
 	}
 
 	// Helper function to record login attempt
-	const recordLoginAttempt = async (userId: string | null, success: boolean) => {
+	const recordLoginAttempt = async (
+		userId: string | null,
+		success: boolean,
+	) => {
 		if (!userId) return; // Can't record without user ID
-		
+
 		try {
 			// Get client info
 			const userAgent = navigator.userAgent;
 			// Note: IP address will be null since we can't get it client-side
 			// In production, you might want to get this from a server endpoint
-			
+
 			const mutation = `
 				mutation InsertLoginAttempt($user_id: uuid!, $success: Boolean!, $user_agent: String) {
 					insert_login_attempts_one(object: {
@@ -89,14 +92,14 @@ export default function AuthPage() {
 					}
 				}
 			`;
-			
+
 			await nhost.graphql.request(mutation, {
 				user_id: userId,
 				success: success,
-				user_agent: userAgent
+				user_agent: userAgent,
 			});
 		} catch (error) {
-			console.warn('Failed to record login attempt:', error);
+			console.warn("Failed to record login attempt:", error);
 			// Don't block the auth flow if logging fails
 		}
 	};
@@ -126,7 +129,7 @@ export default function AuthPage() {
 		} else {
 			// Sign in attempt
 			const result = await signInEmailPassword(email, password);
-			
+
 			// Record login attempt (both success and failure)
 			if (result.isSuccess && result.user) {
 				// Record successful login
@@ -137,7 +140,7 @@ export default function AuthPage() {
 				// This is tricky since failed login doesn't return user info
 				// We could potentially look up user by email, but that might be a security risk
 				// For now, we'll only log successful attempts
-				console.log('Login failed:', result.error?.message);
+				console.log("Login failed:", result.error?.message);
 			}
 		}
 	};

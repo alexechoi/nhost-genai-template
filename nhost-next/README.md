@@ -92,7 +92,7 @@ src/
 
 1. **Landing Page** (`/`): Shows different content based on auth state
 2. **Auth Page** (`/auth`): Handles both signup and login
-3. **Dashboard** (`/dashboard`): Protected page showing user info and data
+3. **Chat** (`/chat`): Protected page showing user info and data
 4. **Auth Wrapper**: Automatically redirects users based on authentication status
 
 ## 🛠️ Key Components

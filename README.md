@@ -1,6 +1,6 @@
-# 🚀 Nhost Next.js + shadcn/ui Template
+# 💬 ChatGPT Clone - Nhost Next.js Template
 
-A **production-ready**, full-stack authentication boilerplate built with **Next.js 15**, **Nhost.io**, and **shadcn/ui**. This template provides a complete authentication system with email verification, protected routes, and a modern design system.
+A **modern ChatGPT-style interface** built with **Next.js 15**, **Nhost.io**, and **shadcn/ui**. This template provides a complete chat application with authentication, thread management, and a beautiful responsive design.
 
 ![Nhost + Next.js](https://img.shields.io/badge/Nhost-Next.js-blue?style=for-the-badge&logo=nextdotjs)
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
@@ -9,28 +9,36 @@ A **production-ready**, full-stack authentication boilerplate built with **Next.
 
 ## ✨ Features
 
+### 💬 **ChatGPT-Style Interface**
+- **Modern Chat UI** - Clean, responsive chat interface
+- **Thread Management** - Create and switch between conversations
+- **Message Bubbles** - Properly styled user and AI messages
+- **Sidebar Navigation** - Collapsible thread list with mobile support
+- **Real-time Messaging** - Smooth message sending and receiving
+- **Echo Response** - Messages are echoed back for demonstration
+
 ### 🔐 **Complete Authentication System**
 - **Email/Password Authentication** with Nhost
 - **Email Verification Flow** with resend functionality
-- **Smart Routing** based on authentication and verification status
+- **Protected Chat Routes** - Authentication required for chat access
 - **Persistent Auth State** across page refreshes
-- **Automatic Redirects** for protected routes
+- **User Profile Integration** in chat sidebar
 
 ### 🎨 **Modern UI/UX with shadcn/ui**
 - **shadcn/ui Design System** - Professional, accessible components
-- **Clean, Modern Interface** - No gradients, authentic shadcn styling
+- **Clean, Modern Interface** - ChatGPT-inspired design
 - **Lucide React Icons** - Consistent iconography throughout
 - **Responsive Design** that works on all devices
-- **Dark Mode Support** with system preference detection
+- **Mobile-First** chat interface with touch-friendly controls
 - **Smooth Animations** and loading states
-- **Accessible Components** with proper ARIA labels
 
 ### 🛡️ **Security & Best Practices**
 - **Protected Routes** with authentication guards
-- **Email Verification Required** for dashboard access
+- **Email Verification Required** for chat access
 - **Secure Environment Variables** handling
 - **TypeScript** for type safety
 - **Error Handling** with user-friendly messages
+- **Keyboard Navigation** support for accessibility
 
 ### 🔧 **Developer Experience**
 - **Next.js 15** with App Router
@@ -164,8 +172,10 @@ src/
 │   │   ├── page.tsx              # 🔐 Login/Signup page (shadcn forms)
 │   │   └── verify-email/
 │   │       └── page.tsx          # ✉️ Email verification (shadcn cards)
-│   ├── dashboard/
-│   │   └── page.tsx              # 🏠 Modern dashboard with stats
+│   ├── chat/
+│   │   └── page.tsx              # 💬 ChatGPT-style interface
+│   ├── settings/
+│   │   └── page.tsx              # ⚙️ User settings and dashboard
 │   ├── components/
 │   │   ├── AuthWrapper.tsx       # 🛡️ Route protection
 │   │   ├── Providers.tsx         # 🔧 Context providers
